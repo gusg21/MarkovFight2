@@ -1,0 +1,209 @@
+[gd_scene load_steps=12 format=3 uid="uid://gera17c6q1e6"]
+
+[ext_resource type="Theme" uid="uid://08d7nmjuvivp" path="res://game/game_theme.tres" id="1_cfumd"]
+[ext_resource type="Texture2D" uid="uid://cxwnnkbia4jic" path="res://game/art/ground-9.png" id="1_kkwn4"]
+[ext_resource type="Script" path="res://game/player.gd" id="2_ajllx"]
+[ext_resource type="Script" path="res://game/NInput.gd" id="2_e7xfq"]
+[ext_resource type="Script" path="res://game/camera.gd" id="2_fs115"]
+[ext_resource type="Script" path="res://game/clear_pad.gd" id="3_j1ewj"]
+[ext_resource type="SpriteFrames" uid="uid://bgn1apmxrjwba" path="res://player/player_frames.tres" id="3_pydlr"]
+[ext_resource type="Script" path="res://game/input_releaser.gd" id="4_hb85n"]
+[ext_resource type="Script" path="res://game/markov_predicter.gd" id="5_ia7wy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3j3au"]
+size = Vector2(1270, 168)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0wy07"]
+radius = 20.0
+height = 50.0
+
+[node name="game" type="Node2D"]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="MarkovWindow" type="Window" parent="HUD"]
+title = "Markov"
+position = Vector2i(30, 36)
+size = Vector2i(150, 300)
+wrap_controls = true
+min_size = Vector2i(150, 300)
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarkovWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_cfumd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/MarkovWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/MarkovWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "[F1] to guess next action"
+
+[node name="MarkovDisplay" type="RichTextLabel" parent="HUD/MarkovWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "..."
+scroll_following = true
+
+[node name="ClearPad" type="Button" parent="HUD/MarkovWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Clear Pad"
+script = ExtResource("3_j1ewj")
+
+[node name="AssociationsDisplay" type="RichTextLabel" parent="HUD/MarkovWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "..."
+scroll_following = true
+
+[node name="DebugWindow" type="Window" parent="HUD"]
+title = "Debug"
+position = Vector2i(250, 36)
+size = Vector2i(198, 184)
+wrap_controls = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/DebugWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_cfumd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/DebugWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="N" type="HBoxContainer" parent="HUD/DebugWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "The size of the ngrams to create"
+
+[node name="Label" type="Label" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/N"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "N"
+
+[node name="NInput" type="LineEdit" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/N"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 1
+text = "3"
+placeholder_text = "n=?"
+alignment = 2
+clear_button_enabled = true
+select_all_on_focus = true
+script = ExtResource("2_e7xfq")
+
+[node name="RepollTime" type="HBoxContainer" parent="HUD/DebugWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "How long to re-add the move event while it's held"
+
+[node name="Label" type="Label" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/RepollTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Repoll Time"
+
+[node name="RepollInput" type="LineEdit" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/RepollTime"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 1
+text = "0.3"
+placeholder_text = "n=?"
+alignment = 2
+clear_button_enabled = true
+select_all_on_focus = true
+script = ExtResource("4_hb85n")
+
+[node name="Feedback" type="HBoxContainer" parent="HUD/DebugWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "Should predicted events be added to the pad?"
+
+[node name="Feedback" type="Label" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/Feedback"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Feedback"
+
+[node name="FeedbackInput" type="CheckBox" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/Feedback"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 1
+button_pressed = true
+
+[node name="RandomDefault" type="HBoxContainer" parent="HUD/DebugWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "If we don't have a good prediction for this event, pick a random event"
+
+[node name="Label" type="Label" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/RandomDefault"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Random Default"
+
+[node name="RandomInput" type="CheckBox" parent="HUD/DebugWindow/MarginContainer/VBoxContainer/RandomDefault"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 1
+button_pressed = true
+
+[node name="Game" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="Cam" type="Camera2D" parent="Game"]
+script = ExtResource("2_fs115")
+
+[node name="Ground" type="StaticBody2D" parent="Game"]
+position = Vector2(-147, 0)
+
+[node name="Ground" type="NinePatchRect" parent="Game/Ground"]
+offset_left = -420.0
+offset_right = 851.0
+offset_bottom = 177.0
+texture = ExtResource("1_kkwn4")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Shape" type="CollisionShape2D" parent="Game/Ground"]
+position = Vector2(216, 84)
+shape = SubResource("RectangleShape2D_3j3au")
+
+[node name="Player" type="CharacterBody2D" parent="Game"]
+unique_name_in_owner = true
+position = Vector2(0, -34)
+script = ExtResource("2_ajllx")
+
+[node name="GFX" type="AnimatedSprite2D" parent="Game/Player"]
+sprite_frames = ExtResource("3_pydlr")
+animation = &"idle"
+
+[node name="Shape" type="CollisionShape2D" parent="Game/Player"]
+position = Vector2(0, 4)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_0wy07")
+
+[node name="MarkovPredicter" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_ia7wy")

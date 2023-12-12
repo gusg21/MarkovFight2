@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://77f8wxl67dei"]
+
+[ext_resource type="Theme" uid="uid://08d7nmjuvivp" path="res://game/game_theme.tres" id="1_kj5aq"]
+[ext_resource type="Script" path="res://words/WordsGenerator.gd" id="2_6oh2u"]
+
+[node name="words" type="Node2D"]
+
+[node name="WordsWindow" type="Window" parent="."]
+title = "Word Generation"
+initial_position = 2
+size = Vector2i(220, 262)
+wrap_controls = true
+
+[node name="MarginContainer" type="MarginContainer" parent="WordsWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_kj5aq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WordsWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WordsWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Corpus"
+
+[node name="Corpus" type="TextEdit" parent="WordsWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+wrap_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WordsWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WordsWindow/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "N"
+
+[node name="NGramLengthInput" type="LineEdit" parent="WordsWindow/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Generate" type="Button" parent="WordsWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Generate Sentence"
+script = ExtResource("2_6oh2u")
+
+[node name="Output" type="RichTextLabel" parent="WordsWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+fit_content = true

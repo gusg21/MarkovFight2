@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://dx48v33hevenb"]
+
+[ext_resource type="Theme" uid="uid://dr35yx61tdejg" path="res://menu/menu_theme.tres" id="1_7wnn0"]
+[ext_resource type="Texture2D" uid="uid://boo031uai4geg" path="res://menu/logo.png" id="1_pgqtw"]
+[ext_resource type="Script" path="res://menu/rotater.gd" id="2_qa3ui"]
+[ext_resource type="Script" path="res://menu/play_button.gd" id="4_fgqk2"]
+
+[node name="Menu" type="Node2D"]
+
+[node name="Menu" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="Menu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_7wnn0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Menu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_pgqtw")
+script = ExtResource("2_qa3ui")
+
+[node name="PlayButton" type="Button" parent="Menu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Play Demo!"
+script = ExtResource("4_fgqk2")
+
+[node name="Label" type="Label" parent="Menu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "by Angus Goucher, 2023
+GPR-340 Final Project"
+horizontal_alignment = 1
